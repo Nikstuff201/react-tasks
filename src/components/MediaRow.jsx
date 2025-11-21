@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types'
+import {Link} from "react-router-dom";
 
 const MediaRow = (props) => {
-  const {item, setSelectedItem} = props;
+  const {item} = props;
   return (
     <tr>
       <td>
@@ -12,7 +13,7 @@ const MediaRow = (props) => {
       <td>{new Date(item.created_at).toLocaleString('fi-FI')}</td>
       <td>{item.filesize}</td>
       <td>{item.media_type}</td>
-      <td><button onClick={() => setSelectedItem(item)}>Choose</button></td>
+      <td><Link to="/single" state={item}>Show</Link></td>
     </tr>
 
   );
