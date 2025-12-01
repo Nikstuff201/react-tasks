@@ -16,10 +16,26 @@ const useMedia = () => {
         console.error('Error fetching media data: ', err);
       }
     }
-  getMedia();
+    getMedia()
   }, []);
   console.log(mediaArray);
   return {mediaArray};
 }
 
-export {useMedia};
+const useAuthentication = () => {
+  const postLogin = async (inputs) => {
+    const fetchOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(inputs),
+    };
+    const loginResult = await fetchData(import.meta.env.VITE_AUTH_API + '/auth/login', fetchOptions);
+    console.log(await loginResult);
+    localStorage.setItem('token', loginResult.token);
+    return loginResult;
+  };
+  return {postLogin};
+}
+export {useMedia, useAuthentication};

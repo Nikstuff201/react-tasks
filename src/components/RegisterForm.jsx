@@ -1,0 +1,3 @@
+const RegisterForm = () => {}
+
+export {RegisterForm}
