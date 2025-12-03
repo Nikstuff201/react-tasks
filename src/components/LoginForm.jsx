@@ -2,9 +2,11 @@ import {useForm} from "../hooks/formhooks.js";
 import {useAuthentication} from "../hooks/apiHooks.js";
 import {useNavigate} from 'react-router-dom';
 
-const LoginForm = () => {
+const LoginForm = (props) => {
 
   const navigate = useNavigate();
+
+  const {setPage} = props;
 
   const initValues = {
     username: '',
@@ -54,6 +56,7 @@ const LoginForm = () => {
         </div>
         <button type="submit">Login</button>
       </form>
+      <button type="button" onClick = {()=>setPage(1)}>Register</button>
     </>
   );
 };

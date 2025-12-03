@@ -1,6 +1,8 @@
 import {useEffect, useState} from "react";
 import {fetchData} from "../utils/fetchData.js";
 
+const api = import .meta.env.VITE_AUTH_API;
+
 const useMedia = () => {
   const [mediaArray, setMediaArray] = useState([]);
   useEffect(() => {
@@ -9,7 +11,7 @@ const useMedia = () => {
         const json = await fetchData(import.meta.env.VITE_MEDIA_API + '/media');
         const newArray = await Promise.all(json.map(async (item) => {
           const result = await fetchData(import.meta.env.VITE_AUTH_API + `/users/${item.user_id}`);
-        return {...item, username: result.username};
+          return {...item, username: result.username};
         }));
         setMediaArray(newArray);
       } catch (err) {
@@ -38,4 +40,33 @@ const useAuthentication = () => {
   };
   return {postLogin};
 }
-export {useMedia, useAuthentication};
+
+
+const useUser = (token) => {
+  const getUserByToken = async () => {
+    const fetchOptions = {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      }
+    }
+    const response = await fetchData(api + '/users/token', fetchOptions);
+    console.log(await response.json);
+    return response
+  }
+
+  const createUser = async (userData) => {
+    const fetchOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(userData),
+    };
+    const response = await fetchData(api + '/users', fetchOptions);
+    return response;
+  }
+  return {getUserByToken, createUser};
+}
+
+export {useMedia, useAuthentication, useUser};

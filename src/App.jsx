@@ -5,7 +5,7 @@ import Upload from './views/Upload';
 import Profile from './views/Profile';
 import Single from "./views/Single.jsx";
 import {Login} from './views/Login.jsx';
-import {Logout} from './views/Logout.jsx';
+
 
 
 
@@ -19,7 +19,6 @@ const App = () => {
           <Route path="/upload" element={<Upload />}/>
           <Route path="/single" element={<Single />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/logout" element={<Logout />} />
         </Route>
       </Routes>
     </BrowserRouter>
