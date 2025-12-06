@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import {fetchData} from "../utils/fetchData.js";
 
 const api = import .meta.env.VITE_AUTH_API;
+const uploadApi = import .meta.env.VITE_UPLOAD_SERVER;
 
 const useMedia = () => {
   const [mediaArray, setMediaArray] = useState([]);
@@ -20,8 +21,26 @@ const useMedia = () => {
     }
     getMedia()
   }, []);
-  console.log(mediaArray);
-  return {mediaArray};
+  const postMedia = async (file, inputs, token) => {
+    const mediaData = {
+      title: inputs.title,
+      description: inputs.description,
+      filename: file.filename,
+      media_type: file.media_type,
+      filesize: file.filesize
+    }
+    const fetchOptions = {
+      method: 'POST',
+      headers: {
+        'authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(mediaData),
+    }
+    const response = await fetchData(import.meta.env.VITE_MEDIA_API + '/media', fetchOptions);
+    return response.media;
+  };
+  return {mediaArray, postMedia};
 }
 
 const useAuthentication = () => {
@@ -69,4 +88,21 @@ const useUser = (token) => {
   return {getUserByToken, createUser};
 }
 
-export {useMedia, useAuthentication, useUser};
+const useFile = () => {
+  const postFile = async (file, token) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    const fetchOptions = {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+      body: formData,
+    };
+    const response = await fetchData(uploadApi + '/upload', fetchOptions);
+    return response.data;
+  }
+  return {postFile};
+}
+
+export {useMedia, useAuthentication, useUser, useFile};
