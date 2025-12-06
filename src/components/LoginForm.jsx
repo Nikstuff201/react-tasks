@@ -1,6 +1,6 @@
 import {useForm} from "../hooks/formhooks.js";
-import {useAuthentication} from "../hooks/apiHooks.js";
 import {useNavigate} from 'react-router-dom';
+import {useUserContext} from "../hooks/contextHooks.jsx";
 
 const LoginForm = (props) => {
 
@@ -13,12 +13,12 @@ const LoginForm = (props) => {
     password: '',
   };
 
-  const {postLogin} = useAuthentication();
+  const {handleLogin, user} = useUserContext();
 
   const doLogin = async () => {
-    const result = await postLogin(inputs);
+    await handleLogin(inputs);
 
-    if (result?.token) {
+    if (!user) {
       navigate('/');
     } else {
       alert("Login failed!");

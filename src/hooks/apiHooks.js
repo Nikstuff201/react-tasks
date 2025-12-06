@@ -51,7 +51,7 @@ const useUser = (token) => {
       }
     }
     const response = await fetchData(api + '/users/token', fetchOptions);
-    console.log(await response.json);
+    console.log(await response);
     return response
   }
 
