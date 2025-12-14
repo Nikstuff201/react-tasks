@@ -11,36 +11,43 @@ const Layout = () => {
   }, []);
 
 
-  return (<div>
-    <nav>
-      <ul>
-        <li>
-          <Link to="/">Home</Link>
-        </li>
-        {user &&
-          <li>
-            <Link to="/profile">Profile</Link>
-          </li>
-        }
-        <li>
-          <Link to="/upload">Upload</Link>
-        </li>
-        {!user &&
-        <li>
-          <Link to="/login">Login</Link>
-        </li>
-        }
-        {user &&
-        <li>
-          <Link to="/logout">Logout</Link>
-        </li>
-        }
-      </ul>
-    </nav>
-    <main>
-      <Outlet/>
-    </main>
-  </div>)
-}
 
-export default Layout
+  return (
+    <div>
+      <div>
+        <nav>
+          <ul className="flex justify-end bg-[#333333] m-0 p-0 **:text-white  **:hover:bg-[#111111] **:p-4">
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            {user && (
+              <>
+                <li>
+                  <Link to="/profile">Profile</Link>
+                </li>
+                <li>
+                  <Link to="/upload">Upload</Link>
+                </li>
+                <li>
+                  <Link to="/logout">Logout</Link>
+                </li>
+              </>
+            )}
+            {!user && (
+              <li>
+                <Link to="/login">Login</Link>
+              </li>
+            )}
+          </ul>
+        </nav>
+        <main>
+          <Outlet />
+        </main>
+      </div>
+    </div>
+  );
+};
+
+export default Layout;
+
+

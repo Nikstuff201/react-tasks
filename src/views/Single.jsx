@@ -1,27 +1,47 @@
-import {useLocation, useNavigate} from "react-router-dom";
+import React from 'react';
+import PropTypes from 'prop-types';
+import {useLocation} from 'react-router';
+import {useNavigate} from 'react-router';
+import Likes from '../components/Likes';
+import {useUserContext} from '../hooks/contextHooks';
+import {useLike} from '../hooks/apiHooks';
 
 const Single = () => {
-  const navigate = useNavigate();
   const {state} = useLocation();
-  console.log(state);
-  const item = state;
+  const item = state.item;
+  const {user} = useUserContext();
+  const {postLike, deleteLike, getLikeCountByMediaId, getLikeByUser} =
+    useLike();
 
-  let mediaElement;
-
-  if (item.media_type.startsWith('video/')) {
-    mediaElement = <video src={item.filename} controls />;
-  } else {
-    mediaElement = <img src={item.filename} alt={item.title} />;
-  }
+  const navigate = useNavigate();
 
   return (
-    <dialog open={!!item}>ˍ
+    <div open={item !== null}>
+      {user && (
+        <Likes
+          mediaId={item.media_id}
+          postLike={postLike}
+          deleteLike={deleteLike}
+          getLikeCountByMediaId={getLikeCountByMediaId}
+          getLikeByUser={getLikeByUser}
+        />
+      )}
       <h1>{item.title}</h1>
+      <h3>{item.username}</h3>
       <p>{item.description}</p>
-      {mediaElement}
+      <img src={item.thumbnail} alt={item.title} />
+
+      {item.media_type === 'image/jpeg' ? (
+        <img src={item.filename} alt={item.title} />
+      ) : item.media_type === 'video/mp4' ? (
+        <video src={item.filename} controls width="400" />
+      ) : null}
+
       <button onClick={() => navigate(-1)}>Go back</button>
-    </dialog>
-  )
-}
+    </div>
+  );
+};
+
+Single.propTypes = {};
 
 export default Single;
